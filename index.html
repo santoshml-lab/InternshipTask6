@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="TaskFlow - A modern SaaS task management capstone application."
+  >
+
+  <title>TaskFlow — SaaS Task Manager</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =========================
+       LOGIN SCREEN
+  ========================== -->
+
+  <section id="auth-screen" class="auth-screen">
+
+    <div class="auth-card">
+
+      <div class="brand">
+        <span class="brand-icon">✓</span>
+        <span>TaskFlow</span>
+      </div>
+
+      <h1>Welcome Back</h1>
+
+      <p class="auth-subtitle">
+        Manage your tasks and stay productive.
+      </p>
+
+      <form id="login-form">
+
+        <div class="form-group">
+          <label for="login-email">Email</label>
+
+          <input
+            type="email"
+            id="login-email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Enter password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="primary-btn">
+          Login
+        </button>
+
+      </form>
+
+      <p id="auth-message" class="auth-message"></p>
+
+      <p class="demo-text">
+        Demo login: any valid email + password
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       MAIN APPLICATION
+  ========================== -->
+
+  <div id="app-screen" class="app-screen hidden">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="sidebar-brand">
+        <span class="brand-icon">✓</span>
+        <span>TaskFlow</span>
+      </div>
+
+      <nav class="sidebar-nav">
+
+        <button class="nav-item active">
+          📊 Dashboard
+        </button>
+
+        <button class="nav-item">
+          📋 All Tasks
+        </button>
+
+        <button class="nav-item">
+          ⭐ Important
+        </button>
+
+        <button class="nav-item">
+          ✅ Completed
+        </button>
+
+      </nav>
+
+      <div class="sidebar-bottom">
+
+        <button id="logout-btn" class="logout-btn">
+          🚪 Logout
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+
+      <header class="topbar">
+
+        <div>
+          <h2>Dashboard</h2>
+          <p>Stay organized and get things done.</p>
+        </div>
+
+        <div class="user-area">
+          <span id="user-email">User</span>
+
+          <div class="avatar">
+            U
+          </div>
+        </div>
+
+      </header>
+
+
+      <!-- DASHBOARD STATS -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon">📋</div>
+
+          <div>
+            <span>Total Tasks</span>
+            <strong id="total-tasks">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+
+          <div>
+            <span>Pending</span>
+            <strong id="pending-tasks">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🚀</div>
+
+          <div>
+            <span>In Progress</span>
+            <strong id="progress-tasks">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+
+          <div>
+            <span>Completed</span>
+            <strong id="completed-tasks">0</strong>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- TASK TOOLBAR -->
+
+      <section class="task-section">
+
+        <div class="section-header">
+
+          <div>
+            <h2>My Tasks</h2>
+            <p>Manage your daily work efficiently.</p>
+          </div>
+
+          <button id="add-task-btn" class="primary-btn">
+            + Add Task
+          </button>
+
+        </div>
+
+
+        <!-- SEARCH + FILTER -->
+
+        <div class="toolbar">
+
+          <div class="search-wrapper">
+
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Search tasks..."
+              autocomplete="off"
+            >
+
+          </div>
+
+          <select id="status-filter">
+
+            <option value="all">
+              All Status
+            </option>
+
+            <option value="pending">
+              Pending
+            </option>
+
+            <option value="progress">
+              In Progress
+            </option>
+
+            <option value="completed">
+              Completed
+            </option>
+
+          </select>
+
+          <select id="priority-filter">
+
+            <option value="all">
+              All Priority
+            </option>
+
+            <option value="high">
+              High
+            </option>
+
+            <option value="medium">
+              Medium
+            </option>
+
+            <option value="low">
+              Low
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- TASK LIST -->
+
+        <div id="task-list" class="task-list">
+
+          <!-- Tasks will be dynamically inserted by JavaScript -->
+
+        </div>
+
+
+        <!-- EMPTY STATE -->
+
+        <div id="empty-state" class="empty-state hidden">
+
+          <div class="empty-icon">
+            📝
+          </div>
+
+          <h3>No tasks found</h3>
+
+          <p>
+            Create a new task to get started.
+          </p>
+
+          <button id="empty-add-btn" class="primary-btn">
+            + Create Task
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================
+       TASK MODAL
+  ========================== -->
+
+  <div id="task-modal" class="modal hidden">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <div>
+          <h2 id="modal-title">
+            Create New Task
+          </h2>
+
+          <p>
+            Add details about your task.
+          </p>
+        </div>
+
+        <button
+          id="close-modal"
+          class="close-btn"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="task-form">
+
+        <input
+          type="hidden"
+          id="task-id"
+        >
+
+
+        <div class="form-group">
+
+          <label for="task-title">
+            Task Title
+          </label>
+
+          <input
+            type="text"
+            id="task-title"
+            placeholder="Enter task title"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="task-description">
+            Description
+          </label>
+
+          <textarea
+            id="task-description"
+            rows="4"
+            placeholder="Describe your task..."
+          ></textarea>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="task-status">
+              Status
+            </label>
+
+            <select id="task-status">
+
+              <option value="pending">
+                Pending
+              </option>
+
+              <option value="progress">
+                In Progress
+              </option>
+
+              <option value="completed">
+                Completed
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="task-priority">
+              Priority
+            </label>
+
+            <select id="task-priority">
+
+              <option value="high">
+                High
+              </option>
+
+              <option value="medium" selected>
+                Medium
+              </option>
+
+              <option value="low">
+                Low
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="task-date">
+            Due Date
+          </label>
+
+          <input
+            type="date"
+            id="task-date"
+          >
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            id="cancel-task"
+            class="secondary-btn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Task
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script src="app.js"></script>
+
+</body>
+</html>
